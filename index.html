@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <title>JASHAIKH VUE Identicon</title>
+    <style>
+        html, body{
+            margin: 0 
+        }
+        #app{
+            background: linear-gradient(#f33,#ff223a,#ff2322, #fa2a23);
+            color: #fff;
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+
+        }
+        #app div{
+            margin: 5px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        input[type=text]{
+            border-radius: 5px;
+            font-size: 14px;
+            height: 30px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h3>My Identicon Generator</h3>
+        <div>
+            <p>you typed: {{textInput ? textInput:'Noting' }}</p>
+            <p>reversed:  {{reverseString ? reverseString:'Noting' }}</p>
+        </div>
+        <div>
+            Input: 
+            <input type="text" v-on:input="onInput"  />
+        </div>
+        <div>
+            Output: 
+            <div v-html="identicon"></div>
+        </div>
+        <div>
+            Reverse Output: 
+            <div v-html="reverseIdenticon"></div>
+        </div>
+        
+    </div>
+    <script src="https://cdn.rawgit.com/dmester/jdenticon/5bbdf8cb/dist/jdenticon.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            methods: {// use these functions to change data
+                onInput: function(event) {
+                this.textInput = event.target.value;
+                console.log(this.textInput);
+                }
+            },
+            data: { 
+                textInput: ''
+            },
+            computed: {
+                identicon: function() {
+                return jdenticon.toSvg(this.textInput, 200);
+                },
+                reverseIdenticon: function() {
+                return jdenticon.toSvg(this.textInput.split('').reverse().join(''), 200);
+                },
+                reverseString: function(){
+                return this.textInput.split('').reverse().join('');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
